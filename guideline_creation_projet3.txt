@@ -1,0 +1,91 @@
+Étapes : 
+
+1) Initialisation du projet : 
+
+npm init
+
+2) Installation des "possibles" dépendances (modules externes au projet)
+
+npm install {nom_du_module} / npm install {nom_du_module}@{numéro_de_version}
+
+Exemple : npm i ejs nodemon 
+- Par facilité et confort : package.json -> script
+-> "start": "nodemon index.js / app.js / ..."
+
+3) Création du fichier principal de l'application 
+
+app.js / server.js / index.js
+
+3 bis) Création des fichiers et dossiers dont on va avoir besoin
+
+Dossier : views
+Fichiers : index.ejs
+
+4) Importation des dépendances
+
+const http = require('http');
+const ejs = require('ejs');
+const fs = require('fs');
+
+5) Instanciation du serveur + lancement
+
+const server = http.createServer();
+
+// Lancement du serveur
+server.listen(port, () => {
+    console.log(`Server is running on port : ${port}`)
+});
+
+6) Lecture du fichier de templating
+
+const body = fs.readFileSync(__dirname+ '/views/index.ejs', 'utf-8');
+
+7) Initialisation du rendering + transfert des "possibles" données
+
+let bodyRender = ejs.render(body, {titreForm: 'Contact us'});
+
+8) Création du template EJS
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><%= titreForm %></h1>
+    <form action="/" method="post">
+        <input type="text" name="fname"/>
+        <input type="number" name="age" />
+        <input type="file" name="photo" />
+        <button>Save</button>
+    </form>
+</body>
+</html>
+
+9) Envoi des données de templating au header du navigateur
+
+const bRender = (request, response) => {
+    response.writeHead(200, {
+        // Envoi les détails du contenu
+        'Content-Length': Buffer.byteLength(body),
+        'Content-Type': 'text/html'
+    });
+    response.end(bodyRendered);
+}
+
+10) Envoi de la vue au serveur
+
+server.on('request', bRender);
+
+OPTIONNEL : 
+
+11) Style du templating (css)
+
+<style>
+        .title {
+            color: chartreuse;
+        }
+    </style>

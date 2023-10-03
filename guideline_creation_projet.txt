@@ -1,0 +1,50 @@
+Étapes : 
+
+1) Initialisation du projet : 
+
+npm init
+
+2) Installation des "possibles" dépendances (modules externes au projet)
+
+npm install {nom_du_module} / npm install {nom_du_module}@{numéro_de_version}
+
+3) Création du fichier principal de l'application 
+
+app.js / server.js / index.js
+
+4) Création du dossier module et du fichier comportant le module
+
+Dossier : modules 
+Fichier : math.js
+
+math.js -> Déclare une const(ante) qui va contenir un objet qui lui va contenir des méthodes
+
+const math = {
+    // ... = spread operator -> On va récupérer
+    // un nombre indéfini de paramètres
+    addition: (...numbers) => {
+        let result = 0;
+        for (const nombre of numbers) {
+            //Incrémentation du résultat
+            //parseInt-> transformer les strings en number
+            result += parseInt(nombre)
+        }
+        return result;
+    }
+};
+
+module.exports = math;
+
+5) Exportation du module 
+
+module.exports = {nom_du_module}
+
+6) Importation du module dans l'application (n'importe où, la ou il y un besoin)
+
+// Importation du module
+const math = require('./modules/math');
+
+7) Utilisation du module
+
+// Utilisation de la méthode addition du module math
+console.log(math.addition(2,2,58,'98'))

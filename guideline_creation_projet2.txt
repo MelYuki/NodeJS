@@ -1,0 +1,97 @@
+Étapes : 
+
+1) Initialisation du projet : 
+
+npm init
+
+2) Installation des "possibles" dépendances (modules externes au projet)
+
+npm install {nom_du_module} / npm install {nom_du_module}@{numéro_de_version}
+
+Exemple : npm i nodemon 
+- Par facilité et confort : package.json -> script
+-> "start": "nodemon index.js / app.js / ..."
+
+3) Création du fichier principal de l'application 
+
+app.js / server.js / index.js
+
+4) Importation des dépendances
+
+const http = require('http');
+
+5) Création de l'instance serveur
+
+// Instanciation de notre serveur avec en paramètres, les requêtes et les réponses
+// Les requêtes vont permettre de récupérer les différents éléments de l'URL, les status code, headers
+// Les réponses vont permettre d'envoyer les différents élements, les status code, les headers
+const server = http.createServer((request, response) => {})
+
+// Lancer le serveur - le numéro port en local n'a pas d'importance
+server.listen(8001, () => {
+    console.log('Server is running on port 8001')
+});
+
+6) Récupération des informations de requêtes
+
+const url = request.url;
+const method = request.method;
+
+7) Création d'une regex récupérant l'id depuis l'url
+
+const productRegex = /(?<=^\/product\/)[0-9]+$/;
+
+8) Routing
+
+	1 - La vérification de l'url par la méthode 
+
+	if (method === 'GET' && url === '/') {
+        const body = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Demo</title>
+        </head>
+        <body>
+            <h1>Hello World</h1>
+        </body>
+        </html>
+        `;
+
+	response.end(body)
+    }
+
+	2 - Vérification de l'url par la méthode ET une regex
+
+	if (method === 'GET' && productRegex.test(url)) {
+        const productId = productRegex.exec(url)
+        response.end(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Demo</title>
+        </head>
+        <body>
+            <h1>Product Id : ${productId}</h1>
+        </body>
+        </html>`);
+
+	3 - Dans le cas ou l'url n'est pas valide - renvoi d'un 404
+
+	response.end(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Demo</title>
+        </head>
+        <body>
+            <h1>Error 404</h1>
+        </body>
+        </html>
+        `);
+
+	
+
